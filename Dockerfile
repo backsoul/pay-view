@@ -24,6 +24,7 @@ RUN npm install
 
 # Set Puppeteer environment variable to use installed Chromium
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+ENV PUPPETEER_SKIP_DOWNLOAD true
 
 EXPOSE 3000
 CMD ["npm", "start"]
