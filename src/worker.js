@@ -4,7 +4,7 @@ const { initializeBrowser } = require('/app/src/utils/utils');
 
 parentPort.on('message', async (data) => {
   const {proxy, user } = data;
-  const dir = 'app/src/images/' + proxy.split("//")[1];
+  const dir = '/app/src/images/' + proxy.split("//")[1];
   try {
     console.log("initialize proxy:", proxy);
     const { browser, page } = await initializeBrowser(proxy);
