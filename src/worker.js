@@ -11,7 +11,7 @@ parentPort.on('message', async (data) => {
     
     console.log("goto proxy:", proxy);
     await page.goto(url, { waitUntil: "domcontentloaded" });
-
+    await new Promise(resolve => setTimeout(resolve, 10000));
     if (!fs.existsSync(dir)){
       fs.mkdirSync(dir);
     }
