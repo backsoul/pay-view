@@ -1,6 +1,6 @@
 FROM node:alpine3.20
 
-# Installs latest Chromium (77) package.
+# Install necessary packages for Puppeteer
 RUN apk add --no-cache \
       chromium \
       nss \
@@ -11,7 +11,9 @@ RUN apk add --no-cache \
       ttf-freefont \
       nodejs \
       npm \
-      tor
+      tor \
+      udev \
+      ttf-opensans
 
 # Create app directory
 WORKDIR /app
@@ -19,6 +21,9 @@ WORKDIR /app
 # Copy app artifacts and dependencies
 COPY . .
 RUN npm install
+
+# Set Puppeteer environment variable to use installed Chromium
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 EXPOSE 3000
 CMD ["npm", "start"]
