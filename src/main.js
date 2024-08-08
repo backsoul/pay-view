@@ -1,16 +1,24 @@
 // main.js
-const { createServer } = require('node:http');
-const browser = require('./browser');
+const express = require('express')
+const app = express()
+const port = 3000
 
-const hostname = '127.0.0.1';
-const port = 3000;
-const server = createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World');
-});
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+const browser = require('/app/src/browser.js');
+browser("laabejamiope1", 1);
+// app.get('/bot', (req, res) => {
+//     console.log(req.query)
+//     const userTwitch = req.query.user;
+//     const limit = req.query.limit;
+//     if(userTwitch && limit){
+//         console.log(`initialize user: ${userTwitch} limit: ${limit}`)
+//         // browser(userTwitch, limit);
+//         // laabejamiope1 1
+//         browser("laabejamiope1", 1);
+//         res.send("BOT SEND")
+//     }
+//     res.send("params missing user or limit")
+// })
 
-// browser();
+// app.listen(port, () => {
+//     console.log(`Example app listening on port ${port}`)
+// })

@@ -1,10 +1,10 @@
-const getProxies = require('./getProxies');
+const getProxies = require('/app/src/getProxies');
 const { Worker } = require('worker_threads');
 
-function runWorker(proxy) {
+function runWorker(proxy, user) {
   return new Promise((resolve, reject) => {
-    const worker = new Worker('./worker.js');
-    worker.postMessage(proxy);
+    const worker = new Worker('/app/src/worker.js');
+    worker.postMessage(proxy, user);
     worker.on('message', (message) => {
       resolve(message);
     });
@@ -19,7 +19,7 @@ function runWorker(proxy) {
   });
 }
 
-const browser = async () => {
+const browser = async (user, limit) => {
   // Obtener la lista de proxies gratuitos
   const proxies = await getProxies();
   if (proxies.length === 0) {
@@ -27,11 +27,11 @@ const browser = async () => {
     return;
   }
   const proxiesShort = [];
-  for (let index = 0; index < 10; index++) {
+  for (let index = 0; index < limit; index++) {
     const proxy = proxies[index];
     proxiesShort.push(proxy)
   }
-  const promises = proxiesShort.map(proxy => runWorker(proxy));
+  const promises = proxiesShort.map(proxy => runWorker(proxy, user));
   const results = await Promise.all(promises);
   console.log('All workers completed:', results);
 }

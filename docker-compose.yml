@@ -6,6 +6,10 @@ services:
       dockerfile: Dockerfile
       context: .
     restart: unless-stopped
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
     environment:
       NODE_ENV: production
       TZ: America/Bogota

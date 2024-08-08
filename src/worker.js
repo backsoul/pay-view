@@ -1,15 +1,15 @@
 const { parentPort } = require('worker_threads');
 const fs = require('fs');
-const { initializeBrowser } = require('./utils/utils');
+const { initializeBrowser } = require('/app/src/utils/utils');
 
-parentPort.on('message', async (proxy) => {
-  const dir = '/Users/danielsarmientocuervo/Projects/pay-view/images/' + proxy.split("//")[1];
+parentPort.on('message', async (proxy,user) => {
+  const dir = './images/' + proxy.split("//")[1];
   try {
     console.log("initialize proxy:", proxy);
     const { browser, page } = await initializeBrowser(proxy);
     
     console.log("goto proxy:", proxy);
-    await page.goto('https://www.twitch.tv/laabejamiope1', { waitUntil: "domcontentloaded" });
+    await page.goto('https://www.twitch.tv/' + user, { waitUntil: "domcontentloaded" });
 
     if (!fs.existsSync(dir)){
       fs.mkdirSync(dir);
