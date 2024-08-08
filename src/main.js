@@ -11,7 +11,7 @@ app.get('/bot', (req, res) => {
     const limit = req.query.limit;
     switch (platform) {
         case "yt":
-            url = id;
+            url = "https://www.youtube.com/watch?v=" + id;
             break;
         case "twitch":
             url = "https://www.twitch.tv/" + id;
