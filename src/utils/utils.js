@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const initializeBrowser = async (proxy) => {
     const browser = await puppeteer.launch({
         headless: true, 
-        args: [`--proxy-server=${proxy}`],
+        args: ['--no-sandbox',`--proxy-server=${proxy}`],
       });
     const page = await browser.newPage();
     await page.setRequestInterception(true);
