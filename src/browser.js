@@ -1,10 +1,10 @@
 const getProxies = require('/app/src/getProxies');
 const { Worker } = require('worker_threads');
 
-function runWorker(proxy, user) {
+function runWorker(proxy, url) {
   return new Promise((resolve, reject) => {
     const worker = new Worker('/app/src/worker.js');
-    const obj = {proxy, user};
+    const obj = {proxy, url};
     worker.postMessage(obj);
     worker.on('message', (message) => {
       resolve(message);

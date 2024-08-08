@@ -3,14 +3,14 @@ const fs = require('fs');
 const { initializeBrowser } = require('/app/src/utils/utils');
 
 parentPort.on('message', async (data) => {
-  const {proxy, user } = data;
+  const {proxy, url } = data;
   const dir = '/app/src/images/' + proxy.split("//")[1];
   try {
     console.log("initialize proxy:", proxy);
     const { browser, page } = await initializeBrowser(proxy);
     
     console.log("goto proxy:", proxy);
-    await page.goto('https://www.twitch.tv/' + user, { waitUntil: "domcontentloaded" });
+    await page.goto(url, { waitUntil: "domcontentloaded" });
 
     if (!fs.existsSync(dir)){
       fs.mkdirSync(dir);

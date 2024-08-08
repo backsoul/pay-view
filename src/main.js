@@ -6,11 +6,23 @@ const browser = require('/app/src/browser.js');
 
 app.get('/bot', (req, res) => {
     console.log(req.query)
-    const userTwitch = req.query.user;
+    const platform = req.query.platform;
+    const id = req.query.id;
     const limit = req.query.limit;
-    if(userTwitch && limit){
-        console.log(`initialize user: ${userTwitch} limit: ${limit}`)
-        browser(userTwitch, limit);
+    switch (platform) {
+        case "yt":
+            url = id;
+            break;
+        case "twitch":
+            url = "https://www.twitch.tv/" + id;
+            break;
+        default:
+            break;
+    }
+    
+    if(url && limit){
+        console.log(`initialize id: ${url} limit: ${limit}`)
+        browser(url, limit);
         res.send("BOT SEND")
     } else {
         res.send("params missing user or limit")
