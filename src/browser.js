@@ -4,7 +4,8 @@ const { Worker } = require('worker_threads');
 function runWorker(proxy, user) {
   return new Promise((resolve, reject) => {
     const worker = new Worker('/app/src/worker.js');
-    worker.postMessage(proxy, user);
+    const obj = {proxy, user};
+    worker.postMessage(obj);
     worker.on('message', (message) => {
       resolve(message);
     });

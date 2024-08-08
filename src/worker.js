@@ -2,8 +2,9 @@ const { parentPort } = require('worker_threads');
 const fs = require('fs');
 const { initializeBrowser } = require('/app/src/utils/utils');
 
-parentPort.on('message', async (proxy,user) => {
-  const dir = './images/' + proxy.split("//")[1];
+parentPort.on('message', async (data) => {
+  const {proxy, user } = data;
+  const dir = 'app/src/images/' + proxy.split("//")[1];
   try {
     console.log("initialize proxy:", proxy);
     const { browser, page } = await initializeBrowser(proxy);
@@ -37,7 +38,7 @@ parentPort.on('message', async (proxy,user) => {
       console.log(`error try open with ip ${proxy}, error: ip ms exceeded`);
       parentPort.postMessage({ success: false, error: "ip ms exceeded" });
     } else {
-      parentPort.postMessage({ success: false, error: "ip error" });
+      parentPort.postMessage({ success: false, error: e });
     }
   }
 });
