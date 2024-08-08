@@ -16,6 +16,8 @@ app.get('/bot', (req, res) => {
         case "twitch":
             url = "https://www.twitch.tv/" + id;
             break;
+        case "kick":
+            url = "https://kick.com/" + id
         default:
             break;
     }
