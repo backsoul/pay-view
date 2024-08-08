@@ -6,5 +6,10 @@ services:
       dockerfile: Dockerfile
       context: .
     restart: unless-stopped
-    ports:
-      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      TZ: America/Bogota
+      VIRTUAL_HOST: pay.backsoul.online
+      VIRTUAL_PORT: 3000
+      LETSENCRYPT_HOST: pay.backsoul.online
+      LETSENCRYPT_EMAIL: danielsarmientoenterprise@gmail.com
