@@ -8,8 +8,6 @@ services:
     restart: unless-stopped
     volumes:
       - .:/app
-    ports:
-      - 3000:3000
     environment:
       NODE_ENV: production
       TZ: America/Bogota
