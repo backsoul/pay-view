@@ -4,6 +4,10 @@ const port = 3000
 
 const browser = require('/app/src/browser.js');
 
+app.get("/", (req, res) => {
+    res.send("welcome to viewer") 
+})
+
 app.get('/bot', (req, res) => {
     console.log(req.query)
     const platform = req.query.platform;
