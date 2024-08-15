@@ -76,6 +76,15 @@ func RunBrowser(proxy string, url string) error {
 		chromedp.Flag("ignore-certificate-errors", false),
 		chromedp.Flag("disable-gpu", false), // A veces puede ayudar deshabilitar el GPU en modo headless
 		chromedp.UserAgent(pkg.GetRandomUserAgent()),
+		chromedp.Flag("disable-extensions", true),
+		chromedp.Flag("disable-plugins", true),
+		chromedp.Flag("disable-infobars", true),
+		chromedp.Flag("disable-translate", true),
+		chromedp.Flag("no-sandbox", false),
+		chromedp.Flag("disable-dev-shm-usage", true),
+		chromedp.Flag("enable-automation", false),
+		chromedp.Flag("disable-blink-features", "AutomationControlled"),
+		chromedp.Flag("start-maximized", true),
 	}
 
 	ctx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
