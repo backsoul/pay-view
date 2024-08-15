@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"strconv"
-	"sync"
 
 	"github.com/fatih/color"
 
@@ -59,15 +58,11 @@ func RunBotView(id string, platform string, numberProxies int) {
 	}
 
 	color.Green("id: %s, platform: %s, proxies: %s", id, platform, numberProxies)
-	var wg sync.WaitGroup
 	for _, proxy := range proxies {
-		wg.Add(1)
 		go func(proxy string) {
-			defer wg.Done()
 			err = internal.RunBrowser(proxy, url)
 			color.Red("proxy: %s ,error: %s", proxy, err)
 		}(proxy)
 	}
-	wg.Wait()
 	fmt.Println("Todas las goroutines han finalizado.")
 }
