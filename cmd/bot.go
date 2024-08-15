@@ -66,9 +66,7 @@ func RunBotView(id string, platform string, numberProxies int) {
 			defer wg.Done() // Decrementa el contador cuando la goroutine termina
 
 			err := internal.RunBrowser(proxy, url)
-			if err != nil {
-				color.Red("proxy: %s ,error: %s", proxy, err)
-			} else {
+			if err == nil {
 				color.Green("proxy: %s completed successfully", proxy)
 			}
 		}(proxy)

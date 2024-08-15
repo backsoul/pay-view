@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto/tls"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -26,7 +25,6 @@ func GetInformationIP(proxy string) (ip MyIPResponse, err error) {
 	var myIP MyIPResponse
 	proxyURL, err := url.Parse(proxy)
 	if err != nil {
-		fmt.Println("Error parsing proxy URL:", err)
 		return myIP, err
 	}
 
@@ -51,20 +49,17 @@ func GetInformationIP(proxy string) (ip MyIPResponse, err error) {
 
 	resp, err := client.Get(urlMyIP)
 	if err != nil {
-		fmt.Println("Error making request:", err)
 		return myIP, err
 	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Error reading response:", err)
 		return myIP, err
 	}
 
 	err = json.Unmarshal(body, &myIP)
 	if err != nil {
-		fmt.Printf("Error unmarshalling response: %v\nResponse Body: %s\n", err, string(body))
 		return myIP, err
 	}
 
@@ -101,7 +96,6 @@ func RunBrowser(proxy string, url string) error {
 	)
 
 	if err != nil {
-		color.Red("proxy failed entry platform: %s", proxy)
 		return nil
 	}
 	color.Green("finished view: %s,location: %s, proxy: %s", url, ip.Country, proxy)
