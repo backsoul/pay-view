@@ -97,7 +97,7 @@ func RunBrowser(proxy string, url string) error {
 	err = chromedp.Run(ctx,
 		chromedp.Evaluate(stealth.JS, nil),
 		chromedp.Navigate(url),
-		chromedp.Sleep(10*time.Second),
+		chromedp.Sleep(1000*time.Second),
 	)
 
 	if err != nil {
