@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"time"
 
+	pkg "github.com/backsoul/viewer/pkg/utils"
 	"github.com/chromedp/chromedp"
 	"github.com/fatih/color"
 	"github.com/go-rod/stealth"
@@ -74,7 +75,7 @@ func RunBrowser(proxy string, url string) error {
 		chromedp.Flag("disable-sync", true),
 		chromedp.Flag("ignore-certificate-errors", false),
 		chromedp.Flag("disable-gpu", false), // A veces puede ayudar deshabilitar el GPU en modo headless
-		chromedp.UserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36"),
+		chromedp.UserAgent(pkg.GetRandomUserAgent()),
 	}
 
 	ctx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
