@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
 	"strconv"
+	"sync"
 
 	"github.com/fatih/color"
 
@@ -57,12 +57,22 @@ func RunBotView(id string, platform string, numberProxies int) {
 		url = "https://www.twitch.tv/bkscode"
 	}
 
-	color.Green("id: %s, platform: %s, proxies: %s", id, platform, numberProxies)
+	color.Green("id: %s, platform: %s, proxies: %s", id, platform, len(proxies))
+	var wg sync.WaitGroup
 	for _, proxy := range proxies {
+		wg.Add(1) // Incrementa el contador del WaitGroup
+
 		go func(proxy string) {
-			err = internal.RunBrowser(proxy, url)
-			color.Red("proxy: %s ,error: %s", proxy, err)
+			defer wg.Done() // Decrementa el contador cuando la goroutine termina
+
+			err := internal.RunBrowser(proxy, url)
+			if err != nil {
+				color.Red("proxy: %s ,error: %s", proxy, err)
+			} else {
+				color.Green("proxy: %s completed successfully", proxy)
+			}
 		}(proxy)
 	}
-	fmt.Println("Todas las goroutines han finalizado.")
+
+	wg.Wait() // Espera a que todas las goroutines terminen
 }
