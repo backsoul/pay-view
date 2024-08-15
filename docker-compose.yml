@@ -13,7 +13,7 @@ services:
   # add the command to run
   app:
     <<: *defaults
-    command: go run main.go bot -p twitch -c jjosuplayss --proxies 100
+    command: go run main.go bot -p twitch -c sakwtf --proxies 100
     volumes:
       - .:/app/
       - /var/run/docker.sock:/tmp/docker.sock:ro
