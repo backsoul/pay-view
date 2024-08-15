@@ -1,30 +1,39 @@
-FROM node:alpine3.20
+# Etapa 1: Construcción del binario
+FROM golang:1.22.1 as builder
 
-# Install necessary packages for Puppeteer
-RUN apk add --no-cache \
-      chromium \
-      nss \
-      freetype \
-      freetype-dev \
-      harfbuzz \
-      ca-certificates \
-      ttf-freefont \
-      nodejs \
-      npm \
-      tor \
-      udev \
-      ttf-opensans
+# Instala las dependencias necesarias
+RUN apt-get update && \
+    apt-get install -y git ca-certificates chromium && \
+    rm -rf /var/lib/apt/lists/*
 
-# Create app directory
+# Configura el directorio de trabajo
 WORKDIR /app
 
-# Copy app artifacts and dependencies
+# Copia el código de la aplicación al contenedor
 COPY . .
-RUN npm install
 
-# Set Puppeteer environment variable to use installed Chromium
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
-ENV PUPPETEER_SKIP_DOWNLOAD true
+# Descarga las dependencias
+RUN go mod tidy
 
-EXPOSE 3000
-CMD ["npm", "start"]
+# Compila el binario, optimizado para contenedores
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o entrypoint
+
+# Etapa 2: Imagen mínima para producción
+FROM gcr.io/distroless/base-debian11
+
+# Copia los certificados raíz
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+
+# Copia el binario desde la etapa de construcción
+COPY --from=builder /app/entrypoint /entrypoint
+
+# Copia el navegador Chromium
+COPY --from=builder /usr/bin/chromium /usr/bin/chromium
+COPY --from=builder /usr/lib/chromium /usr/lib/chromium
+
+# Define la variable de entorno para indicar el path del navegador a chromedp
+ENV CHROME_PATH=/usr/bin/chromium
+
+# Define el punto de entrada del contenedor
+ENTRYPOINT ["/entrypoint"]
+

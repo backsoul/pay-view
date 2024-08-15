@@ -1,24 +1,19 @@
-version: '3.2'
-
-services: 
-  app:
+services:
+  # used as base for all services
+  test: &defaults
     build:
-      dockerfile: Dockerfile
       context: .
-    restart: unless-stopped
+      target: builder
+    working_dir: /app/
+    command: go test -v ./...
+    volumes:
+      - .:/app/
+
+  # include all information in test and
+  # add the command to run
+  app:
+    <<: *defaults
+    command: go run main.go bot -p twitch -c juanchomanza --proxies 5
     volumes:
       - .:/app/
       - /var/run/docker.sock:/tmp/docker.sock:ro
-    networks:
-      - web
-    environment:
-      NODE_ENV: production
-      TZ: America/Bogota
-      VIRTUAL_HOST: pay.backsoul.online
-      VIRTUAL_PORT: 3000
-      LETSENCRYPT_HOST: pay.backsoul.online
-      LETSENCRYPT_EMAIL: danielsarmientoenterprise@gmail.com
-
-networks:
-  web:
-    external: true
