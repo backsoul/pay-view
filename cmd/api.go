@@ -24,7 +24,7 @@ func init() {
 func InitializeServer() {
 	r := gin.Default()
 
-	r.GET("/ondetah/:trackingID", func(c *gin.Context) {
+	r.GET("/api/:trackingID", func(c *gin.Context) {
 		trackingID := c.Param("trackingID")
 		statuses, err := RunOndetahView(trackingID)
 		if err != nil {

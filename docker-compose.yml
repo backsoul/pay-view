@@ -34,7 +34,7 @@ services:
     environment:
       NODE_ENV: production
       TZ: America/Bogota
-      VIRTUAL_HOST: api.lumisar.com
+      VIRTUAL_HOST: ondetah.backsoul.com.co
       VIRTUAL_PORT: 8080
-      LETSENCRYPT_HOST: api.lumisar.com
+      LETSENCRYPT_HOST: ondetah.backsoul.com.co
       LETSENCRYPT_EMAIL: danielsarmientoenterprise@gmail.com
