@@ -160,7 +160,7 @@ func RunBrowserOndetah(url string) ([]string, error) {
 		}
 
 		text := s.Find(".m-timeline-2__item-text--bold").Text()
-		statuses = append(statuses, prefix+text)
+		statuses = append(statuses, text)
 		fmt.Println(prefix + text)
 	})
 
