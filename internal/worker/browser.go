@@ -159,7 +159,7 @@ func RunBrowserOndetah(url string) ([]string, error) {
 			prefix = "process -"
 		}
 
-		text := s.Find(".m-timeline-2__item-text--bold").Text()
+		text := strings.TrimSpace(s.Find(".m-timeline-2__item-text--bold").Text())
 		statuses = append(statuses, text)
 		fmt.Println(prefix + text)
 	})
