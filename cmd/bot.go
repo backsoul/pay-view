@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"strconv"
 	"sync"
@@ -57,20 +58,16 @@ func RunBotView(id string, platform string, numberProxies int) {
 		url = "https://www.twitch.tv/bkscode"
 	}
 
-	color.Green("id: %s, platform: %s, proxies: %s", id, platform, len(proxies))
+	color.Green("id: %s, platform: %s, proxies: %s", id, platform, numberProxies)
 	var wg sync.WaitGroup
 	for _, proxy := range proxies {
-		wg.Add(1) // Incrementa el contador del WaitGroup
-
+		wg.Add(1)
 		go func(proxy string) {
-			defer wg.Done() // Decrementa el contador cuando la goroutine termina
-
-			err := internal.RunBrowser(proxy, url)
-			if err == nil {
-				color.Green("proxy: %s completed successfully", proxy)
-			}
+			defer wg.Done()
+			err = internal.RunBrowser(proxy, url)
+			color.Red("proxy: %s ,error: %s", proxy, err)
 		}(proxy)
 	}
-
-	wg.Wait() // Espera a que todas las goroutines terminen
+	wg.Wait()
+	fmt.Println("Todas las goroutines han finalizado.")
 }

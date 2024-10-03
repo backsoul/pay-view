@@ -11,9 +11,30 @@ services:
 
   # include all information in test and
   # add the command to run
-  app:
+  # app:
+  #   <<: *defaults
+  #   command: go run main.go bot -p twitch -c jorllinio_11 --proxies 5
+  #   volumes:
+  #     - .:/app/
+  #     - /var/run/docker.sock:/tmp/docker.sock:ro
+  
+  # ondetah:
+  #   <<: *defaults
+  #   command: go run main.go ondetah -t 44567663268081587803
+  #   volumes:
+  #     - .:/app/
+  #     - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  api:
     <<: *defaults
-    command: go run main.go bot -p twitch -c jorllinio_11 --proxies 100
+    command: go run main.go api 
     volumes:
       - .:/app/
       - /var/run/docker.sock:/tmp/docker.sock:ro
+    environment:
+      NODE_ENV: production
+      TZ: America/Bogota
+      VIRTUAL_HOST: api.lumisar.com
+      VIRTUAL_PORT: 8080
+      LETSENCRYPT_HOST: api.lumisar.com
+      LETSENCRYPT_EMAIL: danielsarmientoenterprise@gmail.com
