@@ -31,9 +31,9 @@ func init() {
 
 func RunOndetahView(trackingID string) ([]string, error) {
 	color.Green("getting tracking statuses ondetah: %s", trackingID)
-	statuses, err := internal.RunBrowserOndetah("https://dafiti.ondetah.com.br/DF/" + trackingID)
+	_, err := internal.RunBrowserOndetah("https://dafiti.ondetah.com.br/DF/" + trackingID)
 	if err != nil {
 		log.Fatalf("Error al obtener status ondetah trackingID: %v, error: %s", trackingID, err)
 	}
-	return statuses, nil
+	return nil, nil
 }

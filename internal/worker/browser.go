@@ -23,6 +23,8 @@ type MyIPResponse struct {
 	CC      string `json:"cc"`
 }
 
+type StatusResponse map[string][]string
+
 func GetInformationIP(proxy string) (ip MyIPResponse, err error) {
 	urlMyIP := "https://api.myip.com"
 	var myIP MyIPResponse
@@ -110,8 +112,8 @@ func RunBrowser(proxy string, url string) error {
 	return nil
 }
 
-func RunBrowserOndetah(url string) ([]string, error) {
-	var statuses []string
+func RunBrowserOndetah(url string) (StatusResponse, error) {
+	statuses := StatusResponse{}
 
 	opts := []chromedp.ExecAllocatorOption{
 		chromedp.Flag("headless", true),
@@ -147,21 +149,16 @@ func RunBrowserOndetah(url string) ([]string, error) {
 	}
 
 	doc.Find(".m-timeline-2__item").Each(func(i int, s *goquery.Selection) {
-		iconClass, _ := s.Find(".m-timeline-2__item-cricle i").Attr("class")
-
-		var prefix string
-		switch {
-		case strings.Contains(iconClass, "fa-clock") && strings.Contains(iconClass, "m--font-warning"):
-			prefix = "created -"
-		case strings.Contains(iconClass, "far fa-check-circle") && strings.Contains(iconClass, "m--font-success"):
-			prefix = "finished -"
-		default:
-			prefix = "process -"
-		}
-
-		text := strings.TrimSpace(s.Find(".m-timeline-2__item-text--bold").Text())
-		statuses = append(statuses, text)
-		fmt.Println(prefix + text)
+		fullText := strings.TrimSpace(s.Find(".m-timeline-2__item-text--bold").Text())
+		s.Find("ul").Each(func(j int, ul *goquery.Selection) {
+			ul.Find("li").Each(func(k int, li *goquery.Selection) {
+				itemText := strings.TrimSpace(li.Text())
+				if len(itemText) > 0 {
+					trimmedKey := strings.TrimSpace(strings.Split(fullText, " ")[0])
+					statuses[trimmedKey] = append(statuses[trimmedKey], itemText)
+				}
+			})
+		})
 	})
 
 	return statuses, nil

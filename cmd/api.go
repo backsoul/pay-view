@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	internal "github.com/backsoul/viewer/internal/worker"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 )
@@ -26,7 +27,7 @@ func InitializeServer() {
 
 	r.GET("/api/:trackingID", func(c *gin.Context) {
 		trackingID := c.Param("trackingID")
-		statuses, err := RunOndetahView(trackingID)
+		statuses, err := internal.RunBrowserOndetah("https://dafiti.ondetah.com.br/DF/" + trackingID)
 		if err != nil {
 			c.String(http.StatusInternalServerError, "Error al obtener status ondetah trackingID: %v, error: %s", trackingID, err)
 			return
