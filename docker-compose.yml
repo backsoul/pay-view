@@ -31,6 +31,8 @@ services:
     volumes:
       - .:/app/
       - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - web
     environment:
       NODE_ENV: production
       TZ: America/Bogota
@@ -38,3 +40,7 @@ services:
       VIRTUAL_PORT: 8080
       LETSENCRYPT_HOST: ondetah.backsoul.com.co
       LETSENCRYPT_EMAIL: danielsarmientoenterprise@gmail.com
+
+networks:
+  web:
+    external: true
